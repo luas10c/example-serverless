@@ -1,0 +1,9 @@
+node_modules
+
+.serverless
+.webpack
+
+dist
+
+.env*
+!.env.example

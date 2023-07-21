@@ -1,0 +1,33 @@
+service: sls-node
+
+plugins:
+  - serverless-webpack
+  - serverless-dotenv-plugin
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: 'us-east-1'
+  apiGateway:
+    binaryMediaTypes:
+      - "multipart/form-data"
+      - "image/jpeg"
+      - "image/png"
+
+functions:
+  sls-avatar-upload:
+    handler: src/avatar/upload.handler
+    events:
+      - http:
+          path: /avatar/upload
+          method: POST
+          cors: true
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
+    excludeFiles: src/**/*.test.ts # Provide a glob for files to ignore
